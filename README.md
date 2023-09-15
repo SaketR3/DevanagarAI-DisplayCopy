@@ -1,5 +1,5 @@
 # Group Team 16
-Group Name: TEAM_NAME
+Group Name: ClimateGPT
 
 [MVP Link](http://cs196.cs.illinois.edu)
 
