@@ -1,5 +1,5 @@
 # Group Team 16
-Group Name: ClimateGPT
+Group Name: Vision
 
 [MVP Link](http://cs196.cs.illinois.edu)
 
