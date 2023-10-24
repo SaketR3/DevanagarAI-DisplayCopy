@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drawing Pad</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles2.css') }}">
 </head>
 <body>
     <header>
@@ -18,17 +18,17 @@
             <!-- Drawing pad will be implemented here -->
         </div>
 
-        <form method="POST" action="/">
-            <!-- Form to send the drawing for prediction -->
-            <button type="submit" id="predict-button">Predict</button>
-        </form>
-
         <!-- Display the prediction result -->
         {% if prediction %}
             <div id="result">
-                <p>{{ prediction }}</p>
+                <p style="font-family: 'Arial'; font-size: 45px">{{ prediction }}</p>
             </div>
         {% endif %}
+
+        <form method="POST" action="/">
+            <!-- Form to send the drawing for prediction -->
+            <button type="submit" id="predict-button">Recognize</button>
+        </form>
     </main>
 
     <footer>

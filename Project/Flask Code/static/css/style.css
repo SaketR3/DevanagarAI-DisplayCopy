@@ -45,7 +45,7 @@ main {
     border-radius: 50%;
     border: none;
     margin: 20px auto;
-    font-size: 1.2em;
+    font-size: 1.2em; 
     cursor: pointer;
 }
 

@@ -5,13 +5,13 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    prediction = None
+    prediction = "Draw a Digit!"
     if request.method == 'POST':
         # Get the file from post request
         # Here we should handle the image data from the drawing pad
         # implement model's prefiction function here
         # here is a simulated prediction
-        prediction = 'This is a simulated prediction: 9 with 99% confidence'
+        prediction = '2, 99%'
 
     # Render the HTML template index.html with the prediction 
     current_year = datetime.now().year  # Get the current year
