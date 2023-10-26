@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for
 from datetime import datetime
+from Flask import Flask
 
 app = Flask(__name__)
 
@@ -10,8 +11,9 @@ def index():
         # Get the file from post request
         # Here we should handle the image data from the drawing pad
         # implement model's prefiction function here
+        digit, accuracy = predict.predict_digit(img)
         # here is a simulated prediction
-        prediction = 'This is a simulated prediction: 9 with 99% confidence'
+        prediction = 'This is a simulated prediction:' +  digit + 'with' + accuracy + 'confidence'
 
     # Render the HTML template index.html with the prediction 
     current_year = datetime.now().year  # Get the current year
