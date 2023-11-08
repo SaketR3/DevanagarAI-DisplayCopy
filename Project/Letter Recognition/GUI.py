@@ -7,16 +7,65 @@ import numpy as np
 
 # label possible outcomes
 devanagari_characters = [
-    "character_01_ka", "character_02_kha", "character_03_ga", "character_04_gha", "character_05_kna",
-    "character_06_cha", "character_07_chha", "character_08_ja", "character_09_jha", "character_10_yna",
-    "character_11_taamatar", "character_12_thaa", "character_13_daa", "character_14_dhaa", "character_15_adna",
-    "character_16_tabala", "character_17_tha", "character_18_da", "character_19_dha", "character_20_na",
-    "character_21_pa", "character_22_pha", "character_23_ba", "character_24_bha", "character_25_ma",
-    "character_26_yaw", "character_27_ra", "character_28_la", "character_29_waw", "character_30_motosaw",
-    "character_31_petchiryakha", "character_32_patalosaw", "character_33_ha", "character_34_chhya",
-    "character_35_tra", "character_36_gya", "digit_0", "digit_1", "digit_2", "digit_3",
-    "digit_4", "digit_5", "digit_6", "digit_7", "digit_8", "digit_9"
+    "क", "ख", "ग", "घ", "ङ",
+    "च", "छ", "ज", "झ", "ञ",
+    "ट", "ठ", "ड", "ढ", "ण",
+    "त", "थ", "द", "ध", "न",
+    "प", "फ", "ब", "भ", "म",
+    "य", "र", "ल", "व", "श",
+    "ष", "स", "ह", "क्ष",
+    "त्र", "त्त", "०", "१", "२", "३",
+    "४", "५", "६", "७", "८", "९"
 ]
+
+dict = {
+  "क": "ka",
+  "ख": "kha",
+  "ग": "ga",
+  "घ": "gha",
+  "ङ": "kna",
+  "च": "cha",
+  "छ": "chha",
+  "ज": "ja",
+  "झ": "jha",
+  "ञ": "yna",
+  "ट": "taamatar",
+  "ठ": "thaa",
+  "ड": "daa",
+  "ढ": "dhaa",
+  "ण": "adna",
+  "त": "tabala",
+  "थ": "tha",
+  "द": "da",
+  "ध": "dha",
+  "न": "na",
+  "प": "pa",
+  "फ": "pha",
+  "ब": "ba",
+  "भ": "bha",
+  "म": "ma",
+  "य": "yaw",
+  "र": "ra",
+  "ल": "la",
+  "व": "waw",
+  "श": "motosaw",
+  "ष": "petchiryakha",
+  "स": "patalosaw",
+  "ह": "ha",
+  "क्ष": "chhya",
+  "त्र": "tra",
+  "त्त": "gya",
+  "०": "0",
+  "१": "1",
+  "२": "2",
+  "३": "3",
+  "४": "4",
+  "५": "5",
+  "६": "6",
+  "७": "7",
+  "८": "8",
+  "९": "9",
+}
 
 # Load the model
 model = load_model('aidan.h5')
@@ -71,7 +120,7 @@ class App(tk.Tk):
         im = ImageGrab.grab((x0, y0, x1, y1))
         
         digit, acc = predict_letter(im)
-        self.label.configure(text= "{} - {:.2f}%".format(devanagari_characters[digit], acc*100))
+        self.label.configure(text= "{} - {:.2f}%".format(devanagari_characters[digit] + ", " + dict.get(devanagari_characters[digit]), acc*100))
 
     def draw_lines(self, event):
         self.x = event.x
