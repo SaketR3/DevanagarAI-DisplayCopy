@@ -3,11 +3,17 @@ import numpy as np
 
 model = load_model('mnist.h5')
 
-def predict_digit(img):
-    img = img.resize((28,28))
+def predict_letter(img):
+    # Resize image to 32x32 pixels
+    img = img.resize((32, 32))
+    # Convert rgb to grayscale
     img = img.convert('L')
-    img = np.array(img)
-    img = img.reshape(1,28,28,1)
-    img = img / 255.0
-    res = model.predict([img])[0]
+    # Invert the grayscale image to match data representation
+    img = Image.fromarray(255 - np.array(img))
+    img_array = np.array(img)
+    # Reshaping to support our model input and normalizing
+    img_array = img_array.reshape(1, 32, 32, 1)
+    img_array = img_array / 255.0
+    # Predicting the class
+    res = model.predict([img_array])[0]
     return np.argmax(res), max(res)

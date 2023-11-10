@@ -11,7 +11,7 @@ def index():
         # Get the file from post request
         # Here we should handle the image data from the drawing pad
         # implement model's prefiction function here
-        digit, accuracy = predict.predict_digit(img)
+        digit, accuracy = predict.predict_letter(img)
         # here is a simulated prediction
         prediction = 'This is a simulated prediction:' +  digit + 'with' + accuracy + 'confidence'
 
