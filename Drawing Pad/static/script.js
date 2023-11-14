@@ -8,7 +8,9 @@ ctx.lineWidth = 2;
 var fill_value = true;
 var stroke_value = false;
 var canvas_data = {"pencil": [], "eraser": []}
-                        
+
+ctx.lineWidth = 15;
+
 function color(color_value){
     ctx.strokeStyle = color_value;
     ctx.fillStyle = color_value;
