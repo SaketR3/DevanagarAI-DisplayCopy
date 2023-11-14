@@ -37,6 +37,12 @@
     box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
 }
 
+#question {
+    color     : #f3f3f3;
+    width     : 80px;
+    height    : 25px;
+}
+
 #erasertool {
     background: #358128; 
     color     : #f3f3f3;
