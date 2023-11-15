@@ -72,8 +72,8 @@ const dictionary = new Map([
     ["९", "9"],
 ]);
 
-// As soon as the webpage is loaded, set the default line thickness 
-// and call generateNewCharacter to display the question 
+// As soon as the webpage is loaded, 
+// call generateNewCharacter to display the question 
 var expected_answer = "";
 generateNewCharacter();
 
