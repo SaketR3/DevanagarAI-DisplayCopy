@@ -1,0 +1,51 @@
+{% include "base.html" %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <body onload="pencil()">
+        <p><h2 id="title">Paint App</h2></p>
+        <p><table>
+            <tr>
+            <td>
+                <fieldset id="toolset">
+                <p id="question">Draw the character representing </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <button id="penciltool" type="button" style="height: 25px; width: 100px;" onclick="pencil()">Pencil</button>
+                <br>
+                <br>
+                <br>
+                <button id="erasertool" type="button" style="height: 25px; width: 100px;" onclick="eraser()">Eraser</button> 
+                <br>
+                <br>
+                <br>
+                <button id="resettool" type="button" style="height: 25px; width: 100px;" onclick="reset()">Reset</button> 
+                <p id="result"> </p>
+            </fieldset>
+            </td>
+            <td>
+                <canvas id="paint" width="450" height="450" style="border: 5px solid #000000;"></canvas>
+            </td>
+            </tr>
+        </table></p>
+        <fieldset id="colorset">
+        <table>
+            <tr>
+                <td><button style="height: 20px; width: 80px;" onclick="fill()">Fill</button>
+                <td><button style="background-color: #ffffff; height: 20px; width: 20px;" onclick="color('#ffffff')"></button>
+            </tr>
+            <tr>
+                <td><button style="height: 20px; width: 80px" onclick="outline()">Outline</button>
+            </tr>
+            <tr>
+                <td><label>Line Width</label></td>
+                <td><button id="pixel_plus" type="button" onclick="add_pixel()" style="width: 25px;">+</button></td>
+                <td><button id="pixel_minus" type="button" onclick="reduce_pixel()" style="width: 25px;">-</button></td>
+            </tr>
+            </table>
+            <label>file name</label><input id="fname" type="text"><button id="save" onclick="save()">Save</button>
+            </fieldset>
+            <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+            <script src=" {{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
