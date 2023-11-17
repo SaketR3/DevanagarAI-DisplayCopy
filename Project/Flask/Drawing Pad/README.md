@@ -1,0 +1,1 @@
+Credit to Nidhin's tutorial: https://nidhinp.wordpress.com/2014/02/19/paint-app-in-flask/ 
