@@ -91,7 +91,11 @@ function generateNewCharacter() {
     // Change the element "question" (in paint.html) to display the new question 
     document.getElementById("question").innerHTML = newText;
 }
-
+function generateNewQuestion(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas_data = { "pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": [] }
+    generateNewCharacter()
+}
 function color(color_value){
     ctx.strokeStyle = color_value;
     ctx.filStyle = color_value;
