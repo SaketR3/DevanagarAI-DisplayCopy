@@ -91,11 +91,23 @@ function generateNewCharacter() {
     // Change the element "question" (in paint.html) to display the new question 
     document.getElementById("question").innerHTML = newText;
 }
+
 function generateNewQuestion(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     canvas_data = { "pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": [] }
     generateNewCharacter()
 }
+
+function updateresult(){
+    // Get the predicted letter from python
+    var predicted_answer = "2"; //for testing
+    if(predicted_answer == dictionary.get(expected_answer)){
+        document.getElementById("result").innerHTML = "Good Job";
+    } else {
+        document.getElementById("result").innerHTML = "Incorrect, try again '" + expected_answer + "'";
+    }
+}
+
 function color(color_value){
     ctx.strokeStyle = color_value;
     ctx.filStyle = color_value;
@@ -207,6 +219,7 @@ function eraser(){
 }  
 
 document.getElementById('save').addEventListener('click', function(e) {
+    updateresult();
     generateNewCharacter();
     let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
     console.log(canvasUrl);
