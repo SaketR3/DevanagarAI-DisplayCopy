@@ -5,90 +5,111 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
 
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization, Activation
+from keras.optimizers import Adam
+from keras.callbacks import LearningRateScheduler, ReduceLROnPlateau
+from keras.preprocessing.image import ImageDataGenerator
+
 
 import matplotlib.pyplot as plt
 
 
 # Load the data
 train = pd.read_csv("data/data.csv")
-train.head()
-
 X = train.drop("character", axis=1)
 y0 = train["character"]
-
-print(y0.unique())
-print(len(y0.unique()))
-
-# Encode the labels
 binencoder = LabelBinarizer()
 y = binencoder.fit_transform(y0)
 
-y
-
 # Split the data into train and test sets
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=90)
-
-x_train = x_train/255
-x_test = x_test/255
-
-print(X.shape)
-print(x_train.shape)
-print(x_test.shape)
-print(y_train.shape)
-print(y_test.shape)
+x_train = x_train / 255
+x_test = x_test / 255
 
 # Reshape the data
 re_x_train = x_train.values.reshape(-1, 32, 32, 1)
 re_x_test = x_test.values.reshape(-1, 32, 32, 1)
 
-print(X.shape)
-print(re_x_train.shape)
-print(re_x_test.shape)
-print(y_train.shape)
-print(y_test.shape)
+# Create an ImageDataGenerator object for data augmentation
+datagen = ImageDataGenerator(
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    zoom_range=[0.7, 1.3],
+    shear_range=0.1,
+    fill_mode='nearest'
+)
 
-# Model architecture
+# Define a learning rate schedule
+def scheduler(epoch, lr):
+    if epoch < 10:
+        return lr
+    else:
+        return lr * 0.9  # Example: reduce lr by 10% every epoch after 10
+    
+lr_scheduler = LearningRateScheduler(scheduler)
+
+# Reduce learning rate of plateau
+lr_plateau_callback = ReduceLROnPlateau(
+    monitor='val_loss',
+    factor=0.5,
+    patience=3,
+    verbose=1
+)
+
+# Enhanced Model Architecture
 model = Sequential()
 
-model.add(Conv2D(32, (4,4), input_shape = (32, 32, 1), activation = 'relu'))
-model.add(MaxPooling2D(pool_size = (2,2)))
+# Increasing depth and filters
+model.add(Conv2D(64, (3,3), padding='same', input_shape=(32, 32, 1), activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2,2)))
 
-model.add(Conv2D(64, (3,3), activation = 'relu'))
-model.add(MaxPooling2D(pool_size = (2,2)))
-model.add(Dropout(0.2))
+model.add(Conv2D(128, (3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+model.add(Conv2D(256, (3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+# Additional layers for complexity
+model.add(Conv2D(512, (3,3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Flatten())
-model.add(Dense(128, activation = 'relu'))
-model.add(Dense(46, activation = 'softmax'))
+model.add(Dense(512, activation='relu', kernel_regularizer='l2'))
+model.add(Dropout(0.5))
+model.add(Dense(46, activation='softmax'))  # Assuming 46 classes for different characters
 
 model.summary()
 
 # Compile the model
-model.compile(
-    loss='categorical_crossentropy',
-    optimizer='adam',
-    metrics=['accuracy']
+optimizer = Adam(lr=0.001)
+model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
+
+# Training with data augmentation
+history = model.fit(
+    datagen.flow(re_x_train, y_train, batch_size=32),
+    validation_data=(re_x_test, y_test),
+    epochs=150,  # Increased epochs
+    verbose=2,
+    callbacks=[lr_scheduler, lr_plateau_callback]
 )
+
 
 print(re_x_train.shape)
 print(re_x_test.shape)
 print(y_train.shape)
 print(y_test.shape)
 
-# Fit the model
-history = model.fit(
-    re_x_train,
-    y_train,
-    validation_split=0.2,
-    epochs=2,
-    batch_size=8,
-    verbose=2,
-)
 
 # Evaluate the model
-# model.evaluate(re_x_test, y_test, verbose=2)
+model.evaluate(re_x_test, y_test, verbose=2)
 
 # Plot the accuracy and loss
 history_df = pd.DataFrame(history.history)
