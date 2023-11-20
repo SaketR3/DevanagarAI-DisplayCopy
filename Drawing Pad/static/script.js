@@ -1,6 +1,8 @@
 var canvas = document.getElementById("paint");
 var ctx = canvas.getContext("2d");
 ctx.lineWidth = 18;
+ctx.strokeStyle = "white";
+ctx.filStyle = "white";
 var width = canvas.width;
 var height = canvas.height;
 var curX, curY, prevX, prevY;
@@ -34,12 +36,12 @@ const dictionary = new Map([
     ["ज", "ja"],
     ["झ", "jha"],
     ["ञ", "yna"],
-    ["ट", "taamatar"],
+    ["ट", "taa"],
     ["ठ", "thaa"],
-    ["ड", "daa"],
-    ["ढ", "dhaa"],
+    ["ड", "da"],
+    ["ढ", "dha"],
     ["ण", "adna"],
-    ["त", "tabala"],
+    ["त", "ta"],
     ["थ", "tha"],
     ["द", "da"],
     ["ध", "dha"],
@@ -49,13 +51,13 @@ const dictionary = new Map([
     ["ब", "ba"],
     ["भ", "bha"],
     ["म", "ma"],
-    ["य", "yaw"],
+    ["य", "ya"],
     ["र", "ra"],
     ["ल", "la"],
-    ["व", "waw"],
-    ["श", "motosaw"],
-    ["ष", "petchiryakha"],
-    ["स", "patalosaw"],
+    ["व", "va"],
+    ["श", "sha"],
+    ["ष", "shaa"],
+    ["स", "sa"],
     ["ह", "ha"],
     ["क्ष", "chhya"],
     ["त्र", "tra"],
@@ -81,6 +83,7 @@ generateNewCharacter();
 function generateNewCharacter() {
     // Randomly pick new character from array "characters"
     expected_answer = characters[(Math.floor(Math.random() * characters.length))];
+    document.getElementById("answer").innerHTML = expected_answer;
 
     // Find the name of the character in the dictionary 
     var newSound = dictionary.get(expected_answer);
@@ -92,10 +95,40 @@ function generateNewCharacter() {
     document.getElementById("question").innerHTML = newText;
 }
 
-function generateNewQuestion(){
+function generateNewQuestion() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     canvas_data = { "pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": [] }
+    document.getElementById("newquestion").hidden = true;
     generateNewCharacter()
+}
+
+function sendData() { 
+    //var value = document.getElementById('input').value; 
+    var canvas = document.getElementById("paint");
+    var ctx = canvas.getContext("2d");
+    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    var answer = document.getElementById('answer').textContent;
+    //document.getElementById('prediction').innerHTML = JSON.stringify(data)
+    //document.getElementById('result').innerHTML = "" + canvas.width + " " + canvas.height
+    $.ajax({ 
+        url: '/process', 
+        type: 'POST', 
+        contentType: 'application/json', 
+        data: JSON.stringify(data), 
+        success: function(response) { 
+            //document.getElementById('prediction').innerHTML = expected_answer; 
+            if (response[0] === answer) {
+                document.getElementById('result').innerHTML = "Correct" + "\! " + response[0] + ", " + response[1] + ", " + response[2];
+                document.getElementById('newquestion').hidden = false;
+            } else {
+                document.getElementById('result').innerHTML = "Incorrect, Please Try Again. " + response[0] + ", " + response[1] + ", " + response[2];
+                document.getElementById('newquestion').hidden = true;
+            }
+        }, 
+        error: function(error) { 
+            console.log(error); 
+        } 
+    }); 
 }
 
 function updateresult(){
@@ -144,10 +177,15 @@ function reset(){
 // pencil tool
         
 function pencil(){
-        
+    ctx.strokeStyle = "white";
+    ctx.filStyle = "white";    
+
     canvas.onmousedown = function(e){
-        curX = e.clientX - canvas.offsetLeft;
-        curY = e.clientY - canvas.offsetTop;
+        //curX = e.clientX - canvas.offsetLeft;
+        //curY = e.clientY - canvas.offsetTop;
+
+        curX = e.clientX - canvas.getBoundingClientRect().x;
+        curY = e.clientY - canvas.getBoundingClientRect().y;
         hold = true;
             
         prevX = curX;
@@ -158,8 +196,10 @@ function pencil(){
         
     canvas.onmousemove = function(e){
         if(hold){
-            curX = e.clientX - canvas.offsetLeft;
-            curY = e.clientY - canvas.offsetTop;
+            //curX = e.clientX - canvas.offsetLeft;
+            //curY = e.clientY - canvas.offsetTop;
+            curX = e.clientX - canvas.getBoundingClientRect().x;
+            curY = e.clientY - canvas.getBoundingClientRect().y;
             draw();
         }
     };
@@ -184,8 +224,10 @@ function pencil(){
 function eraser(){
     
     canvas.onmousedown = function(e){
-        curX = e.clientX - canvas.offsetLeft;
-        curY = e.clientY - canvas.offsetTop;
+        //curX = e.clientX - canvas.offsetLeft;
+        //curY = e.clientY - canvas.offsetTop;
+        curX = e.clientX - canvas.getBoundingClientRect().x;
+        curY = e.clientY - canvas.getBoundingClientRect().y;
         hold = true;
             
         prevX = curX;
@@ -196,8 +238,10 @@ function eraser(){
         
     canvas.onmousemove = function(e){
         if(hold){
-            curX = e.clientX - canvas.offsetLeft;
-            curY = e.clientY - canvas.offsetTop;
+            //curX = e.clientX - canvas.offsetLeft;
+            //curY = e.clientY - canvas.offsetTop;
+            curX = e.clientX - canvas.getBoundingClientRect().x;
+            curY = e.clientY - canvas.getBoundingClientRect().y;
             draw();
         }
     };
@@ -212,14 +256,13 @@ function eraser(){
         
     function draw(){
         ctx.lineTo(curX, curY);
-        ctx.strokeStyle = "#ffffff";
+        ctx.strokeStyle = "black";
         ctx.stroke();
         canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
     }    
 }  
 
 document.getElementById('save').addEventListener('click', function(e) {
-    updateresult();
     generateNewCharacter();
     let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
     console.log(canvasUrl);
