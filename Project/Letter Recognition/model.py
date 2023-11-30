@@ -20,7 +20,7 @@ X = train.drop("character", axis=1)
 y0 = train["character"]
 binencoder = LabelBinarizer()
 y = binencoder.fit_transform(y0)
-
+ 
 # Split the data into train and test sets
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=90)
 x_train = x_train / 255
