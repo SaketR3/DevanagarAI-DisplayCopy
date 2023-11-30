@@ -120,7 +120,12 @@ class App(tk.Tk):
         im = ImageGrab.grab((x0, y0, x1, y1))
         
         digit, acc = predict_letter(im)
-        self.label.configure(text= "{} - {:.2f}%".format(devanagari_characters[digit] + ", " + dict.get(devanagari_characters[digit]), acc*100))
+        if (acc*100 < 80.0):
+            self.label.configure(text= "Cannot recognise, try again!")
+        ## elif (acc*100 < 96.0 and acc*100 > 75):
+        ##    self.label.configure(text= "Not sure, but it might be a {} - {:.2f}%".format(devanagari_characters[digit] + ", " + dict.get(devanagari_characters[digit]), acc*100) + "confident")
+        else:
+            self.label.configure(text= "{} - {:.2f}%".format(devanagari_characters[digit] + ", " + dict.get(devanagari_characters[digit]), acc*100))
 
     def draw_lines(self, event):
         self.x = event.x
