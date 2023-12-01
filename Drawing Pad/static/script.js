@@ -10,7 +10,7 @@ var hold = false;
 var fill_value = true;
 var stroke_value = false;
 var canvas_data = {"pencil": [], "eraser": []}
-
+ 
 // Array of all characters
 const characters = [
     "क", "ख", "ग", "घ", "ङ",
