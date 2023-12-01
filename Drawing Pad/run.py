@@ -38,12 +38,12 @@ dict = {
   "ज": "ja",
   "झ": "jha",
   "ञ": "yna",
-  "ट": "taamatar",
+  "ट": "taa",
   "ठ": "thaa",
-  "ड": "daa",
-  "ढ": "dhaa",
+  "ड": "da",
+  "ढ": "dha",
   "ण": "adna",
-  "त": "tabala",
+  "त": "ta",
   "थ": "tha",
   "द": "da",
   "ध": "dha",
@@ -53,13 +53,13 @@ dict = {
   "ब": "ba",
   "भ": "bha",
   "म": "ma",
-  "य": "yaw",
+  "य": "ya",
   "र": "ra",
   "ल": "la",
-  "व": "waw",
-  "श": "motosaw",
-  "ष": "petchiryakha",
-  "स": "patalosaw",
+  "व": "va",
+  "श": "sha",
+  "ष": "shaa",
+  "स": "sa",
   "ह": "ha",
   "क्ष": "chhya",
   "त्र": "tra",
@@ -136,7 +136,7 @@ def process():
     img_array = img_array / 255.0
     res = model.predict([img_array])[0]
     letter, acc = np.argmax(res), max(res)
-    return_array = [devanagari_characters[letter], dict.get(devanagari_characters[letter]), str(acc*100)]
+    return_array = [devanagari_characters[letter], dict.get(devanagari_characters[letter]), str(round(acc*100, 2))]
     return return_array
 
 if __name__ == '__main__':
