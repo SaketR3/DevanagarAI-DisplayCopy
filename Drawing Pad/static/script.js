@@ -118,10 +118,10 @@ function sendData() {
         success: function(response) { 
             //document.getElementById('prediction').innerHTML = expected_answer; 
             if (response[0] === answer) {
-                document.getElementById('result').innerHTML = "Correct" + "\! " + response[0] + ", " + response[1] + ", " + response[2];
+                document.getElementById('result').innerHTML = "Correct\! You drew " + response[0] + " / " + response[1] + ". (Confidence: " + response[2] + "%)";
                 document.getElementById('newquestion').hidden = false;
             } else {
-                document.getElementById('result').innerHTML = "Incorrect, Please Try Again. " + response[0] + ", " + response[1] + ", " + response[2];
+                document.getElementById('result').innerHTML = "Incorrect, Please Try Again. You drew " + response[0] + " / " + response[1] + ". (Confidence: " + response[2] + "%)";
                 document.getElementById('newquestion').hidden = true;
             }
         }, 
