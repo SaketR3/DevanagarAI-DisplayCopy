@@ -1,18 +1,3 @@
-html {
-    display: table;
-    margin: auto;
-}
-
-body {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.center {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
 #toolset {
     width     : 100px;
     height    : 440px;
