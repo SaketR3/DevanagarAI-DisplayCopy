@@ -10,7 +10,7 @@ var hold = false;
 var fill_value = true;
 var stroke_value = false;
 var canvas_data = {"pencil": [], "eraser": []}
- 
+
 // Array of all characters
 const characters = [
     "क", "ख", "ग", "घ", "ङ",
@@ -83,7 +83,6 @@ generateNewCharacter();
 function generateNewCharacter() {
     // Randomly pick new character from array "characters"
     expected_answer = characters[(Math.floor(Math.random() * characters.length))];
-    document.getElementById("answer").innerHTML = expected_answer;
 
     // Find the name of the character in the dictionary 
     var newSound = dictionary.get(expected_answer);
@@ -103,13 +102,10 @@ function generateNewQuestion() {
 }
 
 function sendData() { 
-    //var value = document.getElementById('input').value; 
     var canvas = document.getElementById("paint");
     var ctx = canvas.getContext("2d");
     var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var answer = document.getElementById('answer').textContent;
-    //document.getElementById('prediction').innerHTML = JSON.stringify(data)
-    //document.getElementById('result').innerHTML = "" + canvas.width + " " + canvas.height
+    var answer = expected_answer;
     $.ajax({ 
         url: '/process', 
         type: 'POST', 
@@ -133,7 +129,7 @@ function sendData() {
 
 function updateresult(){
     // Get the predicted letter from python
-    var predicted_answer = "2"; //for testing
+    //var predicted_answer = "2"; //for testing
     if(predicted_answer == dictionary.get(expected_answer)){
         document.getElementById("result").innerHTML = "Good Job";
     } else {
