@@ -257,30 +257,3 @@ function eraser(){
         canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
     }    
 }  
-
-document.getElementById('save').addEventListener('click', function(e) {
-    generateNewCharacter();
-    let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
-    console.log(canvasUrl);
-    const createEl = document.createElement('a');
-    createEl.href = canvasUrl;
-    createEl.download = "download-this-canvas";
-    createEl.click();
-    createEl.remove();
-  });
-
-function save(){
-    var filename = document.getElementById("fname").value;
-    var data = JSON.stringify(canvas_data);
-    var image = canvas.toDataURL("image/jpeg", .5);
-    console.log(canvasUrl);
-    const createEl = document.createElement('a');
-    createEl.href = image;
-    createEl.download = "download-this-canvas";
-    createEl.click();
-    document.body.appendChild(a);
-    createEl.remove();
-    
-    $.post("/", { save_fname: filename, save_cdata: data, save_image: image });
-    alert(filename + " saved");
-} 
