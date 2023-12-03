@@ -92,16 +92,6 @@ def paintapp():
         conn.commit()
         conn.close()
         return redirect(url_for('save'))        
-        
-        
-@app.route('/save', methods=['GET', 'POST'])
-def save():
-    conn = psycopg2.connect(database="paintmyown", user="nidhin")
-    cur = conn.cursor()
-    cur.execute("SELECT id, name, data, canvas_image from files")
-    files = cur.fetchall()
-    conn.close()
-    return render_template("save.html", files = files )
 
 @app.route('/process', methods=['POST']) 
 def process(): 
@@ -138,6 +128,10 @@ def process():
     letter, acc = np.argmax(res), max(res)
     return_array = [devanagari_characters[letter], dict.get(devanagari_characters[letter]), str(round(acc*100, 2))]
     return return_array
+
+@app.route('/about', methods=['GET'])
+def about_page():
+    return render_template("about.html")
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
