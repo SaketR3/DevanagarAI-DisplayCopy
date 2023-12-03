@@ -3,46 +3,7 @@
     <title>DevanagarAI</title> 
 </head>
 <body>
-    <!-- <div>
-    <a href="/">Home</a>
-    <a href="/save">Gallery</a>
-    </div> -->
-    <!-- <input type="text" id="input"> -->
-    <!-- <button onclick="sendData()">Send Data</button> -->
-    <p id="answer" hidden="true"></p>
-    <div id="output"></div> 
-    <script> 
-        /*function sendData() { 
-            var value = document.getElementById('input').value; 
-            var canvas = document.getElementById("paint");
-            var ctx = canvas.getContext("2d");
-            var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            var answer = document.getElementById('answer').textContent;
-            //document.getElementById('prediction').innerHTML = JSON.stringify(data)
-            //document.getElementById('prediction').innerHTML = "" + canvas.width + " " + canvas.height
-            $.ajax({ 
-                url: '/process', 
-                type: 'POST', 
-                contentType: 'application/json', 
-                data: JSON.stringify(data), 
-                success: function(response) { 
-                    //document.getElementById('prediction').innerHTML = expected_answer; 
-                    if (response[0] === answer) {
-                        document.getElementById('result').innerHTML = "Correct" + "\! " + response[0] + ", " + response[1] + ", " + response[2];
-                        document.getElementById('newquestion').hidden = false;
-                    } else {
-                        document.getElementById('result').innerHTML = "Incorrect" + ". " + response[0] + ", " + response[1] + ", " + response[2];
-                        document.getElementById('newquestion').hidden = true;
-                    }
-                }, 
-                error: function(error) { 
-                    console.log(error); 
-                } 
-            }); 
-        }*/
-    </script>
     <hr>
     {% block content %}{% endblock %}
 </body>
 </html>
-
